@@ -44,6 +44,16 @@ export async function getUserByEmail(email) {
     throw new Error('Failed to fetch user by email from database');
   } 
 }
+export async function getUserByPhone(phone) {
+  try {
+    const connection = getConnection();
+    const [rows] = await connection.execute('SELECT * FROM users WHERE phone = ?', [phone]);
+    return rows[0];
+  } catch (error) {
+    console.error('Error fetching user by phone:', error);
+    throw new Error('Failed to fetch user by phone from database');
+  }
+}
 
 
 export async function createUser(request, reply) {
@@ -53,7 +63,7 @@ export async function createUser(request, reply) {
     // Query ke database untuk membuat user baru
     const connection = getConnection();
     const [result] = await connection.execute(
-      'INSERT INTO users (name, email) VALUES (?, ?)',
+      'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
       [name, email, password, role]
     );
 
@@ -64,6 +74,7 @@ export async function createUser(request, reply) {
 
     reply.status(201);
     return { status: 'success', message: 'User created successfully', data: newUser[0] };
+    
   } catch (error) {
     console.error('Error creating user:', error);
     throw new Error('Failed to create user in database');

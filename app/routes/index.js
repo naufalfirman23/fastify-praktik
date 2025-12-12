@@ -1,5 +1,4 @@
 //DAFTAR ROUTE DI SINI
-
 import app from '../index.js';
 import authRoutes from './auth.js';
 import homeRoute from './home.js';

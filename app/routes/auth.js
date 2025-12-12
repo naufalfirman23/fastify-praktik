@@ -1,5 +1,5 @@
 import authController from "../controllers/authController.js";
-import { authenticate, authorize } from "../middleware/auth";
+import { authenticate, authorize } from "../middleware/auth.js";
 
 async function authRoutes(fastify, options) {
   // Route untuk login
@@ -8,6 +8,7 @@ async function authRoutes(fastify, options) {
       const response = await authController.login(request, reply);
       return response;
     } catch (error) {
+      console.error('Login error:', error);
       reply.code(500).send({ status: 'error', message: error.message || 'Internal Server Error' });
     }
   });
@@ -19,6 +20,7 @@ async function authRoutes(fastify, options) {
       const response = await authController.register(request, reply);
       return response;
     } catch (error) {
+      console.error('Register error:', error);
       reply.code(500).send({ status: 'error', message: error.message || 'Internal Server Error' });
     }
   });

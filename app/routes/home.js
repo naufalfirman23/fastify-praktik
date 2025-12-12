@@ -1,6 +1,9 @@
+import {authenticate, authorize} from '../middleware/auth.js';
+
 async function home(fastify, options) {
   // Route untuk mendapatkan semua users
-  fastify.get('/', async (request, reply) => {
+  fastify.get('/', {preHandler: [authenticate, authorize(['user'])] }, async (request, reply) => {
+    
     try {
       const response = "SELAMAT DATANG DI API FASTIFY V1.0";
       return response;
